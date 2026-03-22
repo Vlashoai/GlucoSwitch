@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlucoSwitch — PlainlyWorks</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f6ff;
+    --card: #ffffff;
+    --blue-deep: #1a4a8a;
+    --blue-mid: #2563eb;
+    --blue-light: #60a5fa;
+    --blue-pale: #dbeafe;
+    --blue-subtle: #eff6ff;
+    --accent: #0ea5e9;
+    --text-dark: #0f172a;
+    --text-mid: #334155;
+    --text-muted: #64748b;
+    --border: #bfdbfe;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(37, 99, 235, 0.10);
+    --shadow-lg: 0 12px 48px rgba(37, 99, 235, 0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 32px 16px 48px;
+    background-image:
+      radial-gradient(ellipse 80% 40% at 50% -10%, rgba(37,99,235,0.13) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 30% at 90% 80%, rgba(14,165,233,0.08) 0%, transparent 60%);
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--blue-mid), var(--accent));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.30);
+  }
+
+  .logo-icon svg { width: 24px; height: 24px; }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 6vw, 38px);
+    font-weight: 800;
+    color: var(--blue-deep);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  h1 span { color: var(--blue-mid); }
+
+  .tagline {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 480px;
+    animation: fadeUp 0.6s 0.15s ease both;
+    border: 1px solid rgba(191,219,254,0.6);
+  }
+
+  /* MODE TABS */
+  .mode-tabs {
+    display: flex;
+    background: var(--blue-subtle);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.22s ease;
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--blue-mid), var(--accent));
+    color: #fff;
+    box-shadow: 0 3px 12px rgba(37,99,235,0.28);
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 14px;
+  }
+
+  /* CONVERTER LAYOUT */
+  .converter-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .input-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+  }
+
+  input[type="number"] {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-dark);
+    background: var(--blue-subtle);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    -moz-appearance: textfield;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  input[type="number"]:focus {
+    border-color: var(--blue-mid);
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.10);
+    background: #fff;
+  }
+
+  .unit-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue-mid);
+    background: var(--blue-pale);
+    border-radius: 6px;
+    padding: 3px 8px;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  /* RANGE TABS */
+  .range-toggle-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .range-tab {
+    flex: 1;
+    padding: 7px 10px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    letter-spacing: 0.2px;
+  }
+
+  .range-tab.active {
+    background: var(--blue-mid);
+    border-color: var(--blue-mid);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.22);
+  }
+
+  .range-header-row { opacity: 0.7; padding-bottom: 4px; border-bottom: 1px solid var(--border); margin-bottom: 2px; }
+
+  /* SWAP BUTTON */
+  .swap-btn {
+    width: 44px; height: 44px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--blue-mid), var(--accent));
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.28);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 28px;
+  }
+
+  .swap-btn:hover { transform: scale(1.08) rotate(180deg); box-shadow: 0 6px 20px rgba(37,99,235,0.36); }
+  .swap-btn svg { width: 20px; height: 20px; }
+
+  /* RANGE REFERENCE */
+  .range-card {
+    background: var(--blue-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-top: 4px;
+  }
+
+  .range-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue-deep);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .range-rows { display: flex; flex-direction: column; gap: 8px; }
+
+  .range-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .range-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .range-name {
+    font-size: 13px;
+    color: var(--text-mid);
+    flex: 1;
+  }
+
+  .range-val {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status-pill {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.3px;
+  }
+
+  /* STATUS INDICATOR */
+  .status-bar {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    opacity: 0;
+  }
+
+  .status-bar.show { opacity: 1; }
+
+  .status-icon { font-size: 18px; }
+
+  /* HbA1c SECTION */
+  .hba1c-section { animation: fadeUp 0.4s ease both; }
+
+  .hba1c-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .hba1c-result {
+    background: var(--blue-subtle);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .hba1c-result.highlight {
+    border-color: var(--blue-mid);
+    background: var(--blue-pale);
+  }
+
+  .hba1c-result-val {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--blue-deep);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hba1c-result-unit {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 2px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 22px 0;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  footer strong { color: var(--blue-mid); }
+
+  /* AUTOFILL BANNER */
+  .autofill-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 1.5px solid var(--blue-light);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--blue-deep);
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .autofill-icon { font-size: 15px; flex-shrink: 0; }
+
+  .autofill-clear {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--blue-mid);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0 2px;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+  }
+
+  .autofill-clear:hover { opacity: 1; }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .number-flash {
+    animation: flash 0.35s ease;
+  }
+
+  @keyframes flash {
+    0% { color: var(--blue-mid); }
+    100% { color: var(--text-dark); }
+  }
+
+  @media (max-width: 400px) {
+    .card { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-row">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3C10.3 3 9 4.3 9 6C9 7.5 9.9 8.8 11.2 9.3L9.5 15H8C7.4 15 7 15.4 7 16C7 16.6 7.4 17 8 17H10L11 21H13L14 17H16C16.6 17 17 16.6 17 16C17 15.4 16.6 15 16 15H14.5L12.8 9.3C14.1 8.8 15 7.5 15 6C15 4.3 13.7 3 12 3Z" fill="white" opacity="0.9"/>
+        <circle cx="12" cy="6" r="2" fill="white"/>
+      </svg>
+    </div>
+    <h1>Gluco<span>Switch</span></h1>
+  </div>
+  <p class="tagline">Blood glucose unit converter · by PlainlyWorks</p>
+</header>
+
+<div class="card">
+  <!-- Mode Tabs -->
+  <div class="mode-tabs">
+    <button class="tab-btn active" onclick="switchMode('glucose')" id="tab-glucose">⚡ Glucose</button>
+    <button class="tab-btn" onclick="switchMode('hba1c')" id="tab-hba1c">🧬 HbA1c</button>
+  </div>
+
+  <!-- GLUCOSE MODE -->
+  <div id="glucose-mode">
+    <p class="section-label">Glucose Converter</p>
+
+    <div class="converter-row">
+      <div class="input-group">
+        <label class="input-label" id="label-left">mmol/L</label>
+        <input type="number" id="mmol-input" placeholder="0.0" step="0.1" min="0" oninput="convertFrom('mmol')">
+        <span class="unit-badge">mmol/L</span>
+      </div>
+
+      <button class="swap-btn" onclick="swapInputs()" title="Swap direction">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3L4 7L8 11"/>
+          <path d="M4 7H20"/>
+          <path d="M16 13L20 17L16 21"/>
+          <path d="M20 17H4"/>
+        </svg>
+      </button>
+
+      <div class="input-group">
+        <label class="input-label" id="label-right">mg/dL</label>
+        <input type="number" id="mgdl-input" placeholder="0.0" step="1" min="0" oninput="convertFrom('mgdl')">
+        <span class="unit-badge">mg/dL</span>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="status-bar" id="status-bar">
+      <span class="status-icon" id="status-icon">✅</span>
+      <span id="status-text">Normal range</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Reference Ranges -->
+    <div class="range-card">
+      <div class="range-toggle-row">
+        <button class="range-tab active" id="rtab-fasting" onclick="switchRangeTab('fasting')">Fasting</button>
+        <button class="range-tab" id="rtab-postmeal" onclick="switchRangeTab('postmeal')">After Meal (2h)</button>
+      </div>
+
+      <!-- Fasting -->
+      <div id="ranges-fasting">
+        <div class="range-rows">
+          <div class="range-row range-header-row">
+            <div style="width:8px"></div>
+            <span class="range-name" style="font-weight:700;color:var(--text-dark)">Category</span>
+            <span class="range-val" style="color:var(--blue-deep);font-weight:700">mmol/L</span>
+            <span class="range-val" style="color:var(--blue-deep);font-weight:700">mg/dL</span>
+          </div>
+          <div class="range-row">
+            <div class="range-dot" style="background:#3b82f6"></div>
+            <span class="range-name">Hypoglycemia</span>
+            <span class="range-val">&lt; 3.9</span>
+            <span class="range-val">&lt; 70</span>
+          </div>
+          <div class="range-row">
+            <div class="range-dot" style="background:#10b981"></div>
+            <span class="range-name">Normal</span>
+            <span class="range-val">3.9–5.5</span>
+            <span class="range-val">70–99</span>
+          </div>
+          <div class="range-row">
+            <div class="range-dot" style="background:#f59e0b"></div>
+            <span class="range-name">Pre-diabetes</span>
+            <span class="range-val">5.6–6.9</span>
+            <span class="range-val">100–125</span>
+          </div>
+          <div class="range-row">
+            <div class="range-dot" style="background:#ef4444"></div>
+            <span class="range-name">Diabetes</span>
+            <span class="range-val">≥ 7.0</span>
+            <span class="range-val">≥ 126</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- After Meal -->
+      <div id="ranges-postmeal" style="display:none">
+        <div class="range-rows">
+          <div class="range-row range-header-row">
+            <div style="width:8px"></div>
+            <span class="range-name" style="font-weight:700;color:var(--text-dark)">Category</span>
+            <span class="range-val" style="color:var(--blue-deep);font-weight:700">mmol/L</span>
+            <span class="range-val" style="color:var(--blue-deep);font-weight:700">mg/dL</span>
+          </div>
+          <div class="range-row">
+            <div class="range-dot" style="background:#3b82f6"></div>
+            <span class="range-name">Hypoglycemia</span>
+            <span class="range-val">&lt; 3.9</span>
+            <span class="range-val">&lt; 70</span>
+          </div>
+          <div class="range-row">
+            <div class="range-dot" style="background:#10b981"></div>
+            <span class="range-name">Normal</span>
+            <span class="range-val">&lt; 7.8</span>
+            <span class="range-val">&lt; 140</span>
+          </div>
+          <div class="range-row">
+            <div class="range-dot" style="background:#f59e0b"></div>
+            <span class="range-name">Pre-diabetes</span>
+            <span class="range-val">7.8–11.0</span>
+            <span class="range-val">140–199</span>
+          </div>
+          <div class="range-row">
+            <div class="range-dot" style="background:#ef4444"></div>
+            <span class="range-name">Diabetes</span>
+            <span class="range-val">≥ 11.1</span>
+            <span class="range-val">≥ 200</span>
+          </div>
+        </div>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:10px;line-height:1.5;">Measured 2 hours after the start of a meal. Target for managed diabetes: &lt; 10.0 mmol/L (&lt; 180 mg/dL).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HbA1c MODE -->
+  <div id="hba1c-mode" style="display:none">
+    <p class="section-label">HbA1c Converter</p>
+
+    <!-- Auto-filled notice from Glucose tab -->
+    <div id="hba1c-autofill-banner" style="display:none">
+      <div class="autofill-banner">
+        <span class="autofill-icon">🔗</span>
+        <span id="autofill-banner-text">Estimated from your 3-month average glucose</span>
+        <button onclick="clearAutofill()" class="autofill-clear">✕</button>
+      </div>
+    </div>
+
+    <div class="converter-row">
+      <div class="input-group">
+        <label class="input-label">mmol/mol (IFCC)</label>
+        <input type="number" id="hba1c-mmol-input" placeholder="0" step="1" min="0" max="200" oninput="convertHba1cFrom('mmol')">
+        <span class="unit-badge">mmol/mol</span>
+      </div>
+
+      <button class="swap-btn" onclick="swapHba1c()" title="Swap direction">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3L4 7L8 11"/>
+          <path d="M4 7H20"/>
+          <path d="M16 13L20 17L16 21"/>
+          <path d="M20 17H4"/>
+        </svg>
+      </button>
+
+      <div class="input-group">
+        <label class="input-label">% (NGSP/DCCT)</label>
+        <input type="number" id="hba1c-pct-input" placeholder="0.0" step="0.1" min="0" max="20" oninput="convertHba1cFrom('pct')">
+        <span class="unit-badge">%</span>
+      </div>
+    </div>
+
+    <!-- HbA1c estimated avg glucose -->
+    <p class="section-label" style="margin-bottom:10px;">Estimated Average Glucose (eAG)</p>
+    <div class="hba1c-row">
+      <div class="hba1c-result" id="eag-mmol-card">
+        <div class="hba1c-result-val" id="eag-mmol">—</div>
+        <div class="hba1c-result-unit">mmol/L</div>
+      </div>
+      <div class="hba1c-result" id="eag-mgdl-card">
+        <div class="hba1c-result-val" id="eag-mgdl">—</div>
+        <div class="hba1c-result-unit">mg/dL</div>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="status-bar" id="hba1c-status-bar">
+      <span class="status-icon" id="hba1c-status-icon">✅</span>
+      <span id="hba1c-status-text">Normal</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="range-card">
+      <p class="range-title">HbA1c Reference</p>
+      <div class="range-rows">
+        <div class="range-row">
+          <div class="range-dot" style="background:#10b981"></div>
+          <span class="range-name">Normal</span>
+          <span class="range-val">< 39 mmol/mol</span>
+          <span class="range-val">< 5.7%</span>
+        </div>
+        <div class="range-row">
+          <div class="range-dot" style="background:#f59e0b"></div>
+          <span class="range-name">Pre-diabetes</span>
+          <span class="range-val">39–47 mmol/mol</span>
+          <span class="range-val">5.7–6.4%</span>
+        </div>
+        <div class="range-row">
+          <div class="range-dot" style="background:#ef4444"></div>
+          <span class="range-name">Diabetes</span>
+          <span class="range-val">≥ 48 mmol/mol</span>
+          <span class="range-val">≥ 6.5%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Built with care by <strong>PlainlyWorks</strong> · For reference only, not medical advice
+</footer>
+
+<script>
+  // ─── RANGE TABS ───────────────────────────────────────────────────────
+  function switchRangeTab(tab) {
+    const isFasting = tab === 'fasting';
+    document.getElementById('ranges-fasting').style.display  = isFasting ? '' : 'none';
+    document.getElementById('ranges-postmeal').style.display = isFasting ? 'none' : '';
+    document.getElementById('rtab-fasting').classList.toggle('active', isFasting);
+    document.getElementById('rtab-postmeal').classList.toggle('active', !isFasting);
+  }
+
+  // ─── GLUCOSE CONVERSION ───────────────────────────────────────────────
+  const FACTOR = 18.0182;
+  let swapped = false;
+
+  // eAG mmol/L → estimated HbA1c %  (reverse of: eAG_mgdl = 28.7×HbA1c − 46.7)
+  // eAG_mgdl = mmol × 18.0182  →  HbA1c% = (eAG_mgdl + 46.7) / 28.7
+  function avgGlucoseMmolToHba1cPct(mmol) {
+    const mgdl = mmol * FACTOR;
+    return (mgdl + 46.7) / 28.7;
+  }
+
+  function convertFrom(source) {
+    const mmolEl = document.getElementById('mmol-input');
+    const mgdlEl = document.getElementById('mgdl-input');
+    let mmolVal;
+
+    if (source === 'mmol') {
+      const v = parseFloat(mmolEl.value);
+      if (!isNaN(v) && v >= 0) {
+        mgdlEl.value = (v * FACTOR).toFixed(1);
+        flashEl(mgdlEl);
+        mmolVal = v;
+      } else {
+        mgdlEl.value = '';
+        mmolVal = null;
+      }
+      updateGlucoseStatus(mmolVal);
+    } else {
+      const v = parseFloat(mgdlEl.value);
+      if (!isNaN(v) && v >= 0) {
+        mmolVal = v / FACTOR;
+        mmolEl.value = mmolVal.toFixed(2);
+        flashEl(mmolEl);
+      } else {
+        mmolVal = null;
+        mmolEl.value = '';
+      }
+      updateGlucoseStatus(mmolVal);
+    }
+
+    // Auto-push estimated HbA1c to HbA1c tab
+    if (mmolVal !== null && mmolVal > 0) {
+      pushEstimatedHba1c(mmolVal);
+    } else {
+      clearAutofill();
+    }
+  }
+
+  function pushEstimatedHba1c(mmolAvg) {
+    const pct = avgGlucoseMmolToHba1cPct(mmolAvg);
+    if (pct < 3 || pct > 20) return; // out of plausible range
+    const mmolMol = Math.round(pctToMmolMol(pct));
+
+    // Populate HbA1c tab inputs
+    document.getElementById('hba1c-pct-input').value  = pct.toFixed(1);
+    document.getElementById('hba1c-mmol-input').value = mmolMol;
+
+    // Show eAG
+    const eagMg = hba1cToEagMgdl(pct);
+    document.getElementById('eag-mgdl').textContent = eagMg.toFixed(0);
+    document.getElementById('eag-mmol').textContent = (eagMg / FACTOR).toFixed(1);
+    document.getElementById('eag-mmol-card').classList.add('highlight');
+    document.getElementById('eag-mgdl-card').classList.add('highlight');
+    updateHba1cStatus(pct);
+
+    // Show banner
+    const mmolEl = document.getElementById('mmol-input');
+    const mgdlEl = document.getElementById('mgdl-input');
+    const mmolDisp = parseFloat(mmolEl.value).toFixed(1);
+    const mgdlDisp = parseFloat(mgdlEl.value).toFixed(0);
+    document.getElementById('autofill-banner-text').textContent =
+      `Est. from avg glucose: ${mmolDisp} mmol/L (${mgdlDisp} mg/dL) over 3 months`;
+    document.getElementById('hba1c-autofill-banner').style.display = '';
+  }
+
+  function clearAutofill() {
+    document.getElementById('hba1c-autofill-banner').style.display = 'none';
+  }
+
+  function swapInputs() {
+    const mmolEl = document.getElementById('mmol-input');
+    const mgdlEl = document.getElementById('mgdl-input');
+    const lL = document.getElementById('label-left');
+    const lR = document.getElementById('label-right');
+
+    swapped = !swapped;
+
+    const mv = mmolEl.value, mgv = mgdlEl.value;
+    mmolEl.value = mgv;
+    mgdlEl.value = mv;
+
+    if (swapped) {
+      lL.textContent = 'mg/dL'; lR.textContent = 'mmol/L';
+    } else {
+      lL.textContent = 'mmol/L'; lR.textContent = 'mg/dL';
+    }
+
+    if (mmolEl.value) convertFrom(swapped ? 'mgdl' : 'mmol');
+  }
+
+  function updateGlucoseStatus(mmol) {
+    const bar = document.getElementById('status-bar');
+    const icon = document.getElementById('status-icon');
+    const text = document.getElementById('status-text');
+
+    if (mmol === null || isNaN(mmol)) {
+      bar.classList.remove('show');
+      return;
+    }
+
+    bar.classList.add('show');
+
+    if (mmol < 3.9) {
+      bar.style.background = '#fef3c7'; bar.style.color = '#92400e';
+      icon.textContent = '⚠️'; text.textContent = 'Low — Hypoglycemia range';
+    } else if (mmol <= 5.5) {
+      bar.style.background = '#d1fae5'; bar.style.color = '#065f46';
+      icon.textContent = '✅'; text.textContent = 'Normal fasting range';
+    } else if (mmol <= 6.9) {
+      bar.style.background = '#fef3c7'; bar.style.color = '#92400e';
+      icon.textContent = '🟡'; text.textContent = 'Pre-diabetes range';
+    } else {
+      bar.style.background = '#fee2e2'; bar.style.color = '#991b1b';
+      icon.textContent = '🔴'; text.textContent = 'Diabetes range';
+    }
+  }
+
+  // ─── HbA1c CONVERSION ─────────────────────────────────────────────────
+  function mmolMolToPct(v) { return (v / 10.929) + 2.15; }
+  function pctToMmolMol(v) { return (v - 2.15) * 10.929; }
+  function hba1cToEagMgdl(pct) { return 28.7 * pct - 46.7; }
+
+  function convertHba1cFrom(source) {
+    const mmolEl = document.getElementById('hba1c-mmol-input');
+    const pctEl  = document.getElementById('hba1c-pct-input');
+    const eagMmolEl = document.getElementById('eag-mmol');
+    const eagMgdlEl = document.getElementById('eag-mgdl');
+
+    let pct;
+
+    if (source === 'mmol') {
+      const v = parseFloat(mmolEl.value);
+      if (isNaN(v) || v < 0) { pctEl.value=''; resetEag(); updateHba1cStatus(null); return; }
+      pct = mmolMolToPct(v);
+      pctEl.value = pct.toFixed(1);
+      flashEl(pctEl);
+    } else {
+      const v = parseFloat(pctEl.value);
+      if (isNaN(v) || v < 0) { mmolEl.value=''; resetEag(); updateHba1cStatus(null); return; }
+      pct = v;
+      const m = pctToMmolMol(v);
+      mmolEl.value = Math.round(m);
+      flashEl(mmolEl);
+    }
+
+    const eagMg = hba1cToEagMgdl(pct);
+    if (eagMg > 0) {
+      eagMgdlEl.textContent = eagMg.toFixed(0);
+      eagMmolEl.textContent = (eagMg / FACTOR).toFixed(1);
+      document.getElementById('eag-mmol-card').classList.add('highlight');
+      document.getElementById('eag-mgdl-card').classList.add('highlight');
+    } else {
+      resetEag();
+    }
+
+    updateHba1cStatus(pct);
+    clearAutofill(); // user manually changed HbA1c — hide auto banner
+  }
+
+  function resetEag() {
+    document.getElementById('eag-mmol').textContent = '—';
+    document.getElementById('eag-mgdl').textContent = '—';
+    document.getElementById('eag-mmol-card').classList.remove('highlight');
+    document.getElementById('eag-mgdl-card').classList.remove('highlight');
+  }
+
+  function updateHba1cStatus(pct) {
+    const bar = document.getElementById('hba1c-status-bar');
+    const icon = document.getElementById('hba1c-status-icon');
+    const text = document.getElementById('hba1c-status-text');
+
+    if (pct === null) { bar.classList.remove('show'); return; }
+    bar.classList.add('show');
+
+    if (pct < 5.7) {
+      bar.style.background = '#d1fae5'; bar.style.color = '#065f46';
+      icon.textContent = '✅'; text.textContent = 'Normal HbA1c level';
+    } else if (pct < 6.5) {
+      bar.style.background = '#fef3c7'; bar.style.color = '#92400e';
+      icon.textContent = '🟡'; text.textContent = 'Pre-diabetes range';
+    } else {
+      bar.style.background = '#fee2e2'; bar.style.color = '#991b1b';
+      icon.textContent = '🔴'; text.textContent = 'Diabetes range';
+    }
+  }
+
+  let hba1cSwapped = false;
+  function swapHba1c() {
+    const mmolEl = document.getElementById('hba1c-mmol-input');
+    const pctEl  = document.getElementById('hba1c-pct-input');
+    const mv = mmolEl.value, pv = pctEl.value;
+    mmolEl.value = pv; pctEl.value = mv;
+    if (mmolEl.value) convertHba1cFrom('mmol');
+  }
+
+  // ─── MODE SWITCH ──────────────────────────────────────────────────────
+  function switchMode(mode) {
+    const isGlucose = mode === 'glucose';
+    document.getElementById('glucose-mode').style.display = isGlucose ? '' : 'none';
+    document.getElementById('hba1c-mode').style.display   = isGlucose ? 'none' : '';
+    document.getElementById('tab-glucose').classList.toggle('active', isGlucose);
+    document.getElementById('tab-hba1c').classList.toggle('active', !isGlucose);
+  }
+
+  // ─── FLASH ANIMATION ──────────────────────────────────────────────────
+  function flashEl(el) {
+    el.classList.remove('number-flash');
+    void el.offsetWidth;
+    el.classList.add('number-flash');
+  }
+</script>
+</body>
+</html>
